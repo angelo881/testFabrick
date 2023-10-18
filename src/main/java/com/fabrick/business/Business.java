@@ -1,5 +1,6 @@
 package com.fabrick.business;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,11 +46,17 @@ public class Business {
 		}
 	}
 
-	public ResponseBonifico bonifico() {
+
+	public Map<String, Object> bonifico(Long accountId, String creditorName, String accountCode, String description,
+			String currency, String amount, LocalDate executionDate) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public ResponseBonifico letturaTransazioni() {
+
+	public Map<String, Object> letturaTransazioni(Long accountId, LocalDate fromAccountingDate,
+			LocalDate toAccountingDate) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
