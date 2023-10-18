@@ -6,12 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
-public class MyErrorController  implements ErrorController {
+public class MyErrorController implements ErrorController {
 
 	@RequestMapping("/error")
-    public ResponseEntity<String> handleError() {
+	public ResponseEntity<String> handleError() {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Generic error");
-    }
+	}
 }

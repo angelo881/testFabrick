@@ -3,7 +3,6 @@
 .project
 .classpath
 *.class
-*.properties
 *.MF
 /target/
 .settings/org.eclipse.core.resources.prefs

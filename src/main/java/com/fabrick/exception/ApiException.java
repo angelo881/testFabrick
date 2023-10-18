@@ -1,6 +1,6 @@
 package com.fabrick.exception;
 
-public class ApiException extends RuntimeException{
+public class ApiException extends RuntimeException {
 
 	public ApiException(Exception e) {
 		super(e);

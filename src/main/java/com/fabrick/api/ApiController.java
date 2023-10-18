@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fabrick.business.Business;
 import com.fabrick.exception.ApiException;
+import com.fabrick.utility.Constants;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
 @RequestMapping("/api")
@@ -32,25 +34,25 @@ public class ApiController {
 
 	@ApiOperation(value = "Legge il saldo del conto", notes = "Legge il saldo")
 	@GetMapping("/conti/{accountId}")
-	public ResponseEntity<?> letturaSaldo(@PathVariable @ApiParam(example = "14537780") Long accountId) {
+	public ResponseEntity<?> letturaSaldo(@PathVariable @Parameter(name = "accountId", description = "Conto di cui si vuole il saldo", example = "14537780") Long accountId) {
 		logger.debug("ricevuta richiesta letturaSaldo {}", accountId);
 		try {
 			Map<String, Object> res = this.business.letturaSaldo(accountId);
-			return ResponseEntity.status(HttpStatus.OK).body(res.get("availableBalance"));
+			return ResponseEntity.status(HttpStatus.OK).body(res.get(Constants.AVAILABLE_BALANCE_KEY));
 		} catch (ApiException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("Errore generico nel recupero saldo");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore generico nel recupero saldo");
 		}
 	}
 
 	@ApiOperation(value = "Esegue un bonifico", notes = "Esegue il bonifico")
-	@PostMapping("/conti/operazioni/bonifico")
-	public ResponseEntity<?> bonifico(@RequestParam @ApiParam(example = "14537780") Long accountId,
-			@RequestParam("creditorName") @ApiParam String creditorName,
-			@RequestParam("accountCode") @ApiParam String accountCode,
-			@RequestParam("description") @ApiParam String description,
-			@RequestParam("currency") @ApiParam String currency, @RequestParam("amount") @ApiParam String amount,
-			@RequestParam("executionDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate executionDate) {
+	@PostMapping("/conti/{accountId}/operazioni/bonifico")
+	public ResponseEntity<?> bonifico(@PathVariable @Parameter(name = "accountId", description = "Conto da cui si vuole effettuare bonifico", example = "14537780")  Long accountId,
+			@RequestParam("creditorName") @Parameter(name = "creditorName", description = "Nome beneficiario")  String creditorName,
+			@RequestParam("accountCode") @Parameter(name = "accountCode", description = "IBAN beneficiario")  String accountCode,
+			@RequestParam("description")  @Parameter(name = "description", description = "Descrizione movimento")  String description,
+			@RequestParam("currency")@Parameter(name = "currency", description = "Valuta") String currency,
+			@RequestParam("amount") @Parameter(name = "amount", description = "Importo")  Double amount,
+			@RequestParam("executionDate") @Parameter(name = "executionDate", description = "Data esecuzione") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate executionDate) {
 		logger.debug(
 				"ricevuta richiesta bonifico con parametri conto {}, creditorName {}, accountCode {}, description {}, currency {}, amount {}, executionDate {}",
 				accountId, creditorName, accountCode, description, currency, amount, executionDate);
@@ -66,15 +68,15 @@ public class ApiController {
 	}
 
 	@ApiOperation(value = "Legge la lista transazioni", notes = "Legge le transazioni")
-	@GetMapping("/conti/operazioni/letturaTransazioni")
-	public ResponseEntity<?> letturaTransazioni(@RequestParam @ApiParam(example = "14537780") Long accountId,
-			@RequestParam("fromAccountingDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromAccountingDate,
-			@RequestParam("toAccountingDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toAccountingDate) {
+	@GetMapping("/conti/{accountId}/operazioni/letturaTransazioni")
+	public ResponseEntity<?> letturaTransazioni(@RequestParam @Parameter(name = "accountId", description = "Conto di cusi desidera l'elenco transazioni", example = "14537780") Long accountId,
+			@RequestParam("fromAccountingDate") @Parameter(name = "fromAccountingDate", description = "Data di partenza intervallo transazioni", example = "2019-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromAccountingDate,
+			@RequestParam("toAccountingDate")  @Parameter(name = "toAccountingDate", description = "Data di partenza intervallo transazioni", example = "2019-12-31") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toAccountingDate) {
 		logger.debug("ricevuta richiesta letturaTransazioni con parametri conto {}, from {}, to {}", accountId,
 				fromAccountingDate, toAccountingDate);
 		try {
-			Map<String, Object> res = this.business.letturaTransazioni(accountId, fromAccountingDate, toAccountingDate);
-			return ResponseEntity.status(HttpStatus.OK).body(res);
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(this.business.letturaTransazioni(accountId, fromAccountingDate, toAccountingDate));
 		} catch (ApiException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body("Errore generico nell'esecuzione bonifico");

@@ -39,15 +39,15 @@ public class ApiControllerTest {
 
 	@Test
 	public void testBonifico() {
-		ResponseEntity<?> resp = controller.bonifico(100023L, "test", "test", "test", "test", "test", LocalDate.now());
+		ResponseEntity<?> resp = controller.bonifico(100023L, "test", "test", "test", "test", 3121.312, LocalDate.now());
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 	}
 
 	@Test
 	public void testBonificoKO() {
 		Mockito.when(business.bonifico(Mockito.anyLong(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
-				Mockito.anyString(), Mockito.anyString(), Mockito.any(LocalDate.class))).thenThrow(ApiException.class);
-		ResponseEntity<?> resp = controller.bonifico(100023L, "test", "test", "test", "test", "test", LocalDate.now());
+				Mockito.anyString(), Mockito.anyDouble(), Mockito.any(LocalDate.class))).thenThrow(ApiException.class);
+		ResponseEntity<?> resp = controller.bonifico(100023L, "test", "test", "test", "test",3121.312, LocalDate.now());
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, resp.getStatusCode());
 	}
 
