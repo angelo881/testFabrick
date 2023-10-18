@@ -5,4 +5,5 @@
 *.class
 *.properties
 *.MF
-*.xml
+/target/
+.settings/org.eclipse.core.resources.prefs
