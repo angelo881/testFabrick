@@ -40,6 +40,7 @@ public class Business {
 
 		try {
 			HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+			logger.info("create request {}", requestEntity);
 			ResponseEntity<Map> response = this.rest
 					.exchange(
 							new StringBuilder().append("/api/gbs/banking/v4.0/accounts/").append(accountId)
@@ -60,6 +61,7 @@ public class Business {
 		try {
 			HttpEntity<?> entity = new HttpEntity<>(Utility.createTransferRequest(creditorName, accountCode,
 					description, currency, amount, executionDate), headers);
+			logger.info("create request {}", entity);
 			ResponseEntity<Map> response = this.rest.exchange(
 					new StringBuilder().append("/api/gbs/banking/v4.0/accounts/").append(accountId)
 							.append("/payments/money-transfers").toString(),

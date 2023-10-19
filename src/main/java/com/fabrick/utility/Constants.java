@@ -23,7 +23,6 @@ public final class Constants {
 	public final static String TO_ACCOUNTING_DATE_KEY = "toAccountingDate";
 	public final static String LIST_KEY = "list";
 	public final static String PAYLOAD_KEY = "payload";
-	public final static String AVAILABLE_BALANCE_KEY = "availableBalance";
 
 
 	

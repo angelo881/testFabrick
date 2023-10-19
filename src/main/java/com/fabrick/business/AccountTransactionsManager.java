@@ -59,6 +59,7 @@ public class AccountTransactionsManager {
 							.append("/api/gbs/banking/v4.0/accounts/{accountId}/transactions").toString())
 					.queryParam(Constants.FROM_ACCOUNTING_DATE_KEY, fromAccountingDate)
 					.queryParam(Constants.TO_ACCOUNTING_DATE_KEY, toAccountingDate).buildAndExpand(uriParams).toUri();
+			logger.info("create uri {}", productUri);
 			ResponseEntity<Map> response = this.rest.exchange(productUri, HttpMethod.GET, requestEntity, Map.class);
 			Map<String, Object> res = (Map<String, Object>) response.getBody().get(Constants.PAYLOAD_KEY);
 			TypeReference<List<Transaction>> typeReference = new TypeReference<List<Transaction>>() {

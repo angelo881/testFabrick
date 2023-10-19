@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fabrick.business.Business;
 import com.fabrick.exception.ApiException;
-import com.fabrick.utility.Constants;
 
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
@@ -38,7 +36,7 @@ public class ApiController {
 		logger.debug("ricevuta richiesta letturaSaldo {}", accountId);
 		try {
 			Map<String, Object> res = this.business.letturaSaldo(accountId);
-			return ResponseEntity.status(HttpStatus.OK).body(res.get(Constants.AVAILABLE_BALANCE_KEY));
+			return ResponseEntity.status(HttpStatus.OK).body(res);
 		} catch (ApiException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore generico nel recupero saldo");
 		}
