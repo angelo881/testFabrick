@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.fabrick.business.Business;
+import com.fabrick.data.RichiestaBonifico;
 import com.fabrick.exception.ApiException;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,15 +40,15 @@ public class ApiControllerTest {
 
 	@Test
 	public void testBonifico() {
-		ResponseEntity<?> resp = controller.bonifico(100023L, "test", "test", "test", "test", 3121.312, LocalDate.now());
+		ResponseEntity<?> resp = controller.bonifico(100023L, Mockito.mock(RichiestaBonifico.class));
 		assertEquals(HttpStatus.OK, resp.getStatusCode());
 	}
 
 	@Test
 	public void testBonificoKO() {
-		Mockito.when(business.bonifico(Mockito.anyLong(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
-				Mockito.anyString(), Mockito.anyDouble(), Mockito.any(LocalDate.class))).thenThrow(ApiException.class);
-		ResponseEntity<?> resp = controller.bonifico(100023L, "test", "test", "test", "test",3121.312, LocalDate.now());
+		Mockito.when(business.bonifico(Mockito.anyLong(), Mockito.any(RichiestaBonifico.class)))
+				.thenThrow(ApiException.class);
+		ResponseEntity<?> resp = controller.bonifico(100023L, Mockito.mock(RichiestaBonifico.class));
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, resp.getStatusCode());
 	}
 

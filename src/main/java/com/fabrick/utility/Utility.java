@@ -1,25 +1,24 @@
 package com.fabrick.utility;
 
-import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import com.fabrick.data.RichiestaBonifico;
 
 public final class Utility {
 
-	public static MultiValueMap<String, Object> createTransferRequest(String creditorName, String accountCode,
-			String description, String currency, Double amount, LocalDate executionDate) {
-		MultiValueMap<String, Object> res = new LinkedMultiValueMap();
-		MultiValueMap<String, Object> creditor = new LinkedMultiValueMap();
-		creditor.add(Constants.NAME_KEY, creditorName);
-		MultiValueMap<String, Object> account = new LinkedMultiValueMap();
-		account.add(Constants.ACCOUNT_CODE_KEY, accountCode);
-		creditor.add(Constants.ACCOUNT_KEY, account);
-		res.add(Constants.DESCRIPTION_KEY, description);
-		res.add(Constants.CURRENCY_KEY, currency);
-		res.add(Constants.AMOUNT_KEY, amount);
-		res.add(Constants.EXECUTION_DATE_KEY, executionDate);
-		res.add(Constants.CREDITOR_KEY, creditor);
+	public static Map createTransferRequest(RichiestaBonifico bonifico) {
+		Map res = new HashMap();
+		Map creditor = new HashMap();
+		creditor.put(Constants.NAME_KEY, bonifico.getCreditorName());
+		Map account = new HashMap();
+		account.put(Constants.ACCOUNT_CODE_KEY, bonifico.getAccountCode());
+		creditor.put(Constants.ACCOUNT_KEY, account);
+		res.put(Constants.DESCRIPTION_KEY, bonifico.getDescription());
+		res.put(Constants.CURRENCY_KEY, bonifico.getCurrency());
+		res.put(Constants.AMOUNT_KEY, bonifico.getAmount());
+		res.put(Constants.EXECUTION_DATE_KEY, bonifico.getExecutionDate());
+		res.put(Constants.CREDITOR_KEY, creditor);
 		return res;
 	}
 

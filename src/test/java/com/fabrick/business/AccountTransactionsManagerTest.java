@@ -54,7 +54,7 @@ public class AccountTransactionsManagerTest {
 		ResponseEntity<Map> res = ResponseEntity.status(HttpStatus.OK).body(resource);
 		Mockito.when(rest.exchange(Mockito.any(URI.class), Mockito.eq(HttpMethod.GET), Mockito.any(HttpEntity.class),
 				Mockito.eq(Map.class))).thenReturn(res);
-		manager.retrieveList(100023L, LocalDate.now(), LocalDate.now());
+		manager.retrieveList(100023L, LocalDate.now(), LocalDate.now(), new HttpHeaders());
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class AccountTransactionsManagerTest {
 		ResponseEntity<Map> res = ResponseEntity.status(HttpStatus.OK).body(resource);
 		Mockito.when(rest.exchange(Mockito.any(URI.class), Mockito.eq(HttpMethod.GET), Mockito.any(HttpEntity.class),
 				Mockito.eq(Map.class))).thenReturn(res);
-		manager.retrieveList(100023L, LocalDate.now(), LocalDate.now());
+		manager.retrieveList(100023L, LocalDate.now(), LocalDate.now(), new HttpHeaders());
 		Mockito.verify(rest).exchange(Mockito.any(URI.class), Mockito.eq(HttpMethod.GET), Mockito.any(HttpEntity.class),
 				Mockito.eq(Map.class));
 	}

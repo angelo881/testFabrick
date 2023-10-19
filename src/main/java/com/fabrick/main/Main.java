@@ -19,9 +19,8 @@ public class Main {
 	static Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication app = new SpringApplication(Main.class);
 
-		app.run(args);
+		new SpringApplication(Main.class).run(args);
 
 		logger.info("main started");
 

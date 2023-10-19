@@ -7,8 +7,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
@@ -24,15 +22,6 @@ public class MyConfiguration {
 	@Value("${BaseUrl}")
 	String BaseUrl;
 
-	@Value("${Auth-Schema}")
-	String authSchema;
-
-	@Value("${Api-Key}")
-	String apiKey;
-
-	@Value("${Idchiave}")
-	String Idchiave;
-
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
@@ -47,14 +36,4 @@ public class MyConfiguration {
 		return rest;
 	}
 
-	@Bean
-	public HttpHeaders httpHeaders() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers.set("Auth-Schema", authSchema);
-		headers.set("BaseUrl", BaseUrl);
-		headers.set("Api-Key", apiKey);
-		headers.set("Idchiave", Idchiave);
-		return headers;
-	}
 }

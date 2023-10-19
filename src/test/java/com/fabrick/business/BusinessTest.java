@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.fabrick.data.RichiestaBonifico;
 import com.fabrick.exception.ApiException;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +31,7 @@ public class BusinessTest {
 	@Mock
 	private AccountTransactionsManager manager;
 
-	@MockBean
+	@Mock
 	private HttpHeaders httpHeaders;
 
 	@InjectMocks
@@ -64,28 +64,27 @@ public class BusinessTest {
 
 		Map<String, Object> resource = new HashMap<>();
 		resource.put("payload", new HashMap<>());
-		ResponseEntity<Map> res = ResponseEntity.status(HttpStatus.OK).body(resource);
-		Mockito.when(rest.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(HttpEntity.class),
-				Mockito.eq(Map.class), Mockito.anyMap())).thenReturn(res);
-		busi.bonifico(100023L, "test", "test", "test", "test", 123.321, LocalDate.now());
+		Mockito.when(rest.postForObject(Mockito.anyString(), Mockito.any(HttpEntity.class), Mockito.eq(Map.class)))
+				.thenReturn(resource);
+		busi.bonifico(100023L, Mockito.mock(RichiestaBonifico.class));
 	}
 
 	@Test
 	public void testBonificoKO() {
 
 		Assertions.assertThrows(ApiException.class, () -> {
-			Mockito.when(rest.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(HttpEntity.class),
-					Mockito.eq(Map.class), Mockito.anyMap())).thenThrow(IllegalArgumentException.class);
-			busi.bonifico(100023L, "test", "test", "test", "test", 321321.31, LocalDate.now());
+			Mockito.when(rest.postForObject(Mockito.anyString(), Mockito.any(HttpEntity.class), Mockito.eq(Map.class)))
+					.thenThrow(IllegalArgumentException.class);
+			busi.bonifico(100023L, Mockito.mock(RichiestaBonifico.class));
+
 		});
 	}
 
 	@Test
 	public void testListaTransazioniOK() throws Exception {
 
-		Mockito.when(
-				manager.retrieveList(Mockito.anyLong(), Mockito.any(LocalDate.class), Mockito.any(LocalDate.class)))
-				.thenReturn(Collections.EMPTY_LIST);
+		Mockito.when(manager.retrieveList(Mockito.anyLong(), Mockito.any(LocalDate.class), Mockito.any(LocalDate.class),
+				Mockito.any(HttpHeaders.class))).thenReturn(Collections.EMPTY_LIST);
 		busi.letturaTransazioni(100023L, LocalDate.now(), LocalDate.now());
 	}
 
@@ -93,8 +92,8 @@ public class BusinessTest {
 	public void testListaTransazioniKO() {
 
 		Assertions.assertThrows(ApiException.class, () -> {
-			Mockito.when(
-					manager.retrieveList(Mockito.anyLong(), Mockito.any(LocalDate.class), Mockito.any(LocalDate.class)))
+			Mockito.when(manager.retrieveList(Mockito.anyLong(), Mockito.any(LocalDate.class),
+					Mockito.any(LocalDate.class), Mockito.any(HttpHeaders.class)))
 					.thenThrow(IllegalArgumentException.class);
 			busi.letturaTransazioni(100023L, LocalDate.now(), LocalDate.now());
 		});

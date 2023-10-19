@@ -23,7 +23,11 @@ public final class Constants {
 	public final static String TO_ACCOUNTING_DATE_KEY = "toAccountingDate";
 	public final static String LIST_KEY = "list";
 	public final static String PAYLOAD_KEY = "payload";
-
-
 	
+	public final static String AUTH_SCHEMA_KEY = "Auth-Schema";
+	public final static String BASE_URL_KEY = "BaseUrl";
+	public final static String API_KEY_KEY = "Api-Key";
+	
+	
+
 }

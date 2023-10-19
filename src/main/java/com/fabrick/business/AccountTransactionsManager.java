@@ -41,11 +41,8 @@ public class AccountTransactionsManager {
 	@Autowired
 	private ObjectMapper mapper;
 
-	@Autowired
-	private HttpHeaders headers;
-
-	public List<Transaction> retrieveList(Long accountId, LocalDate fromAccountingDate, LocalDate toAccountingDate)
-			throws Exception {
+	public List<Transaction> retrieveList(Long accountId, LocalDate fromAccountingDate, LocalDate toAccountingDate,
+			HttpHeaders headers) throws Exception {
 		List<Transaction> result = this.repo.findTransactions(fromAccountingDate, toAccountingDate, accountId);
 		// utilizzo il database in memoria come cache, se ho già i risultati salvati, li
 		// recupero dal db, piu veloce piuttosto che interrogare l'api esterna
